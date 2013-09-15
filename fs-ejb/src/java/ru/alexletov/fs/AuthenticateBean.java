@@ -25,12 +25,6 @@ public class AuthenticateBean implements IAuthenticateBean {
     @PersistenceContext(unitName = "fs-ejbPU")
     EntityManager entityManager; 
     
-    /**
-     * Function to check password via username
-     * @param login
-     * @param password
-     * @return true on correct login & password, false in other case
-     */
     @Override
     public boolean doLogin(String login, String password) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
