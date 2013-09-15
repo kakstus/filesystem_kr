@@ -5,8 +5,6 @@
 package ru.alexletov.fs;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import ru.alexletov.fs.entities.dao.DAOFactory;
 import ru.alexletov.fs.entities.dao.UserDAO;
 
@@ -15,9 +13,8 @@ import ru.alexletov.fs.entities.dao.UserDAO;
  * @author Alex
  */
 @Stateless
-public class AuthenticateBean implements IAuthenticateBean {
+public class AuthenticateBean {
 
-    @Override
     public boolean doLogin(String login, String password) {
         DAOFactory df = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
         UserDAO ud = df.getUserDAO();

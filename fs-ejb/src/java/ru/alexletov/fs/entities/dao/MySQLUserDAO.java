@@ -8,12 +8,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import ru.alexletov.fs.AuthenticateBean;
+import ru.alexletov.fs.dto.UserDTO;
 import ru.alexletov.fs.entities.User;
 
 /**
@@ -34,10 +35,10 @@ public class MySQLUserDAO implements UserDAO {
         criteria.where(builder.equal(userRoot.get("login"), login));
         User user = entityManager.createQuery(criteria).getSingleResult();
         
-        if(user == null) {
+        if (user == null) {
             return false;
         }
-        if(user.getPassword().equals(encryptPassword(password))) {
+        if (user.getPassword().equals(encryptPassword(password))) {
             return true;
         }        
         return false;
@@ -46,11 +47,11 @@ public class MySQLUserDAO implements UserDAO {
     @Override
     public boolean checkPasswordById(Long id, String password) {     
         User user = entityManager.find(User.class, id);
-        
-        if(user == null) {
+
+        if (user == null) {
             return false;
         }
-        if(user.getPassword().equals(encryptPassword(password))) {
+        if (user.getPassword().equals(encryptPassword(password))) {
             return true;
         }        
         return false;
@@ -66,5 +67,26 @@ public class MySQLUserDAO implements UserDAO {
         }
         byte[] pwdHashByte = md.digest(password.getBytes());
         return pwdHashByte.toString();
+    }
+
+    @Override
+    public UserDTO addNewUser(String login, String password, String name,
+            String lastName, String email) {
+        entityManager.getTransaction().begin();
+        User user = new User();
+        user.setAdmin(0);
+        user.setLogin(login);
+        user.setPassword(encryptPassword(password));
+        user.setName(name);
+        user.setLastname(lastName);
+        user.setEmail(email);
+        try {
+            entityManager.persist(user);
+        } catch (EntityExistsException ex) {
+            Logger.getLogger(MySQLUserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        entityManager.getTransaction().commit();
+        return new UserDTO(user);
     }
 }

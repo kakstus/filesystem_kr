@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:a4j="http://java.sun.com/jsf/html">
+       <h:form enctype="ssl">
+            <h:panelGrid columns="1">
+                <h:outputText value="Login"/>
+                <h:inputText id="inputLogin" label="Enter login" value="#{loginBean.login}"
+                             validator="#{loginBean.validateName}"
+                             validatorMessage="Invalid login"/>
+                <h:message for="inputLogin" errorStyle="color: red;"/>
+
+                <h:outputText value="Password"/>
+                <h:inputSecret id="inputPassword" label="Enter password" value="#{loginBean.password}"
+                               validator="#{loginBean.validatePassword}"
+                               validatorMessage="Invalid password"/>
+                <h:message for="inputPassword" errorStyle="color: red;"/>
+                <h:messages globalOnly="true" style="color: red;"/>
+                <a4j:commandButton value="Login" action="#{loginBean.doLogin}" />
+            </h:panelGrid>
+        </h:form>
+</ui:component>
+

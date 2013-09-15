@@ -15,7 +15,7 @@ public abstract class DAOFactory {
     public abstract FileDAO getFileDAO();
     
     public static DAOFactory getDAOFactory(int factory) {
-        switch(factory) {
+        switch (factory) {
             case MYSQL:
                 return new MySQLDAOFactory();
             default:
