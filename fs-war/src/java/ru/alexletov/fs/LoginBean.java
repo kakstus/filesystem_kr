@@ -22,6 +22,7 @@ public class LoginBean {
     @EJB
     private AuthenticateBean authBean;
     private boolean logged = false;
+    private boolean loginError = false;
     private String login;
     private String password;
     /**
@@ -34,23 +35,38 @@ public class LoginBean {
         return logged;
     }
     public void doLogin() {
-        logged = false; //authBean.doLogin(login, password);
+        loginError = false;
+        logged = authBean.doLogin(login, password);
+        if (!logged) {
+            loginError = true;
+        }
     }
     
     public void validateName(FacesContext context, UIComponent component,
-            Object value){
+            Object value) {
         String l = (String) value;
-        if (l == null || l.length() < 5){
-            throw new ValidatorException(new FacesMessage("Login is too small"));
+        if (l == null || l.length() < 5) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Login is too small", "Login is too small"));
         }
     }
     public void validatePassword(FacesContext context, UIComponent component,
-                                 Object value){
+            Object value) {
         String p = (String)value;
-        if (p == null || p.length() < 5){
-            //context.addMessage(null, );
-            throw new ValidatorException(new FacesMessage("Password is too small"));
+        if (p == null || p.length() < 5) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Password is too small", "Password is too small"));
         }
+    }
+
+    public boolean isLoginError() {
+        return loginError;
+    }
+
+    public void setLoginError(boolean loginError) {
+        this.loginError = loginError;
     }
 
     public String getLogin() {

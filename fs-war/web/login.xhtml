@@ -5,6 +5,7 @@
 <center>
     <p:panel header="File Share Server Login" style="width:400px;">
         <h:form enctype="ssl">
+            <h:outputText value="Authentication failed!" style="color:red;" rendered="#{loginBean.loginError}" />
             <p>
                 <p:inputText id="login" 
                              value="#{loginBean.login}"
@@ -33,4 +34,3 @@
     </p:panel>
 </center>
 </ui:component>
-

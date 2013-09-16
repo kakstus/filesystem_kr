@@ -4,6 +4,8 @@
  */
 package ru.alexletov.fs.entities.dao;
 
+import javax.persistence.EntityManager;
+
 /**
  *
  * @author Alex
@@ -14,10 +16,10 @@ public abstract class DAOFactory {
     public abstract UserDAO getUserDAO();
     public abstract FileDAO getFileDAO();
     
-    public static DAOFactory getDAOFactory(int factory) {
+    public static DAOFactory getDAOFactory(int factory, EntityManager em) {
         switch (factory) {
             case MYSQL:
-                return new MySQLDAOFactory();
+                return new MySQLDAOFactory(em);
             default:
                 return null;
         }

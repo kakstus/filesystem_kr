@@ -5,6 +5,8 @@
 package ru.alexletov.fs;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import ru.alexletov.fs.entities.dao.DAOFactory;
 import ru.alexletov.fs.entities.dao.UserDAO;
 
@@ -14,9 +16,10 @@ import ru.alexletov.fs.entities.dao.UserDAO;
  */
 @Stateless
 public class AuthenticateBean {
-
+    @PersistenceContext
+    EntityManager em;
     public boolean doLogin(String login, String password) {
-        DAOFactory df = DAOFactory.getDAOFactory(DAOFactory.MYSQL);
+        DAOFactory df = DAOFactory.getDAOFactory(DAOFactory.MYSQL, em);
         UserDAO ud = df.getUserDAO();
         return ud.checkPasswordByLogin(login, password);
     }

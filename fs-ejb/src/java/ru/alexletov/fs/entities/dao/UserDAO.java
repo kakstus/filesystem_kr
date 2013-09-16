@@ -11,6 +11,7 @@ import ru.alexletov.fs.dto.UserDTO;
  * @author Alex
  */
 public interface UserDAO {
+    
     /**
      * Check password for equals in database by login. Use SHA-512 encryption
      * @param login Login
