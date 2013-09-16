@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.validation.ValidationException;
+import javax.faces.validator.ValidatorException;
 
 /**
  *
@@ -19,7 +19,7 @@ import javax.validation.ValidationException;
 @ManagedBean
 @SessionScoped
 public class LoginBean {
-    @EJB(lookup="java:global/fs/fs-ejb/AuthenticateBean")
+    @EJB
     private AuthenticateBean authBean;
     private boolean logged = false;
     private String login;
@@ -40,17 +40,16 @@ public class LoginBean {
     public void validateName(FacesContext context, UIComponent component,
             Object value){
         String l = (String) value;
-        if (l == null || l.length() < 3){
-            context.addMessage(null, new FacesMessage("Login is too small"));
-            throw new ValidationException();
+        if (l == null || l.length() < 5){
+            throw new ValidatorException(new FacesMessage("Login is too small"));
         }
     }
     public void validatePassword(FacesContext context, UIComponent component,
                                  Object value){
         String p = (String)value;
-        if (p == null || p.length() < 3){
-            context.addMessage(null, new FacesMessage("Password is too small"));
-            throw new ValidationException();
+        if (p == null || p.length() < 5){
+            //context.addMessage(null, );
+            throw new ValidatorException(new FacesMessage("Password is too small"));
         }
     }
 
