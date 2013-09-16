@@ -9,22 +9,15 @@
     <title>File Share Server</title>
 </h:head>
     
-<h:body>
-    <p:layout fullPage="true">
-        <p:layoutUnit position="center">
-            <p:panel header="Login">
-                <c:choose>
-                    <c:when test="#{loginBean.logged}">
-                        <h1>Hello Java</h1>
-                    </c:when>
-                    <c:otherwise>
-                        <ui:include src="login.xhtml" />
-                    </c:otherwise>
-                </c:choose>
-                <br />
-            </p:panel>
-        </p:layoutUnit>
-    </p:layout>
+<h:body>    
+    <c:choose>
+        <c:when test="#{loginBean.logged}">
+            <h1>Hello Java</h1>
+        </c:when>
+        <c:otherwise>
+            <ui:include src="login.xhtml" />
+        </c:otherwise>
+    </c:choose>          
 </h:body>
 </html>
 

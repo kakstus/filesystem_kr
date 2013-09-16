@@ -1,28 +1,36 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
               xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:p="http://primefaces.org/ui"
-              xmlns:f="http://java.sun.com/jsf/core">
-       <h:form enctype="ssl">
-            <p:inputText id="login" 
-                         value="#{loginBean.login}"
-                         required="true"
-                         requiredMessage="Login incorrect."
-                         validator="#{loginBean.validateName}" />
-            <p:watermark for="login" value="Login" />
-            <p:message for="login"/>
-
-            <p:password id="password" 
-                         value="#{loginBean.password}"
-                         required="true"
-                         requiredMessage="Password incorrect."
-                         validator="#{loginBean.validatePassword}" />
-            <p:watermark for="password" value="Password" />
-            <p:message for="password"/>
-
+              xmlns:p="http://primefaces.org/ui">
+<center>
+    <p:panel header="File Share Server Login" style="width:400px;">
+        <h:form enctype="ssl">
+            <p>
+                <p:inputText id="login" 
+                             value="#{loginBean.login}"
+                             required="true"
+                             requiredMessage="Login is empty."
+                             validator="#{loginBean.validateName}" />
+                <p:watermark for="login" value="Login" />
+            </p>
+            <p>
+                <p:message for="login" />
+            </p>
+            <p>
+                <p:password id="password" 
+                             value="#{loginBean.password}"
+                             required="true"
+                             requiredMessage="Password is empty."
+                             validator="#{loginBean.validatePassword}" />
+                <p:watermark for="password" value="Password" />
+            </p>
+            <p>
+                <p:message for="password"/>
+            </p>
             <p:commandButton value="Login" action="#{loginBean.doLogin}"
                      ajax="false"/>
-
         </h:form>
+    </p:panel>
+</center>
 </ui:component>
 
