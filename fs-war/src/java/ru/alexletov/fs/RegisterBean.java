@@ -4,8 +4,12 @@
  */
 package ru.alexletov.fs;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 /**
  *
@@ -23,6 +27,50 @@ public class RegisterBean {
      * Creates a new instance of RegisterBean
      */
     public RegisterBean() {
+    }
+    
+    
+    
+    public void validateName(FacesContext context, UIComponent component,
+            Object value) {
+        String n = (String) value;
+        if (n == null || n.length() < 3) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Name is too small", "Name is too small"));
+        }
+    }
+    
+    public void validateLastName(FacesContext context, UIComponent component,
+            Object value) {
+        String l = (String) value;
+        if (l == null || l.length() < 3) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Last name is too small", "Last name is too small"));
+        }
+    }
+    
+    public void validateLogin(FacesContext context, UIComponent component,
+            Object value) {
+        String l = (String) value;
+        if (l == null || l.length() < 5) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Login is too small", "Login is too small"));
+        }
+    }
+    
+    public void validatePassword(FacesContext context, UIComponent component,
+            Object value) {
+        String p = (String) value;
+        // TODO: Implement
+    }
+    
+    public void validateEmail(FacesContext context, UIComponent component,
+            Object value) {
+        String e = (String) value;
+        // TODO: Implement
     }
 
     public String getLogin() {
@@ -63,7 +111,5 @@ public class RegisterBean {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    
+    }    
 }

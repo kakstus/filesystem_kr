@@ -51,6 +51,7 @@ public class LoginBean {
                         "Login is too small", "Login is too small"));
         }
     }
+    
     public void validatePassword(FacesContext context, UIComponent component,
             Object value) {
         String p = (String)value;
