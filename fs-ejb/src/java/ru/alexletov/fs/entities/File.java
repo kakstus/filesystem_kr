@@ -5,6 +5,7 @@
 package ru.alexletov.fs.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "File.findAll", query = "SELECT f FROM File f"),
     @NamedQuery(name = "File.findById", query = "SELECT f FROM File f WHERE f.id = :id"),
     @NamedQuery(name = "File.findByName", query = "SELECT f FROM File f WHERE f.name = :name"),
+    @NamedQuery(name = "File.findByCreateDate", query = "SELECT f FROM File f WHERE f.createDate = :createDate"),
     @NamedQuery(name = "File.findByShared", query = "SELECT f FROM File f WHERE f.shared = :shared")})
 public class File implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -52,6 +56,14 @@ public class File implements Serializable {
     private byte[] content;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "create_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Lob
+    @Column(name = "description")
+    private byte[] description;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "shared")
     private int shared;
     @JoinColumn(name = "userid", referencedColumnName = "id")
@@ -65,10 +77,11 @@ public class File implements Serializable {
         this.id = id;
     }
 
-    public File(Integer id, String name, byte[] content, int shared) {
+    public File(Integer id, String name, byte[] content, Date createDate, int shared) {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.createDate = createDate;
         this.shared = shared;
     }
 
@@ -94,6 +107,22 @@ public class File implements Serializable {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public byte[] getDescription() {
+        return description;
+    }
+
+    public void setDescription(byte[] description) {
+        this.description = description;
     }
 
     public int getShared() {
