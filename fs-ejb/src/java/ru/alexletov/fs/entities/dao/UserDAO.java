@@ -40,4 +40,6 @@ public interface UserDAO {
             String lastName, String email);
     
     public UserDTO addNewUser(UserDTO user, String password);
+    
+    public boolean userExists(String login);
 }

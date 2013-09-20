@@ -27,9 +27,10 @@ public class UserBean {
         UserDAO ud = df.getUserDAO();
         return ud.addNewUser(user, password);
     }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
     
-
+    public boolean exists(String login) {
+        DAOFactory df = DAOFactory.getDAOFactory(DAOFactory.MYSQL, em);
+        UserDAO ud = df.getUserDAO();
+        return ud.userExists(login);
+    }
 }

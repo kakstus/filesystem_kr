@@ -38,41 +38,79 @@ public class RegisterBean {
     public void validateName(FacesContext context, UIComponent component,
             Object value) {
         String n = (String) value;
-        if (n == null || n.length() < 3) {
+        Integer len = n.length();
+        if (n == null || len < 3) {
             throw new ValidatorException(
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Name is too small", "Name is too small"));
+                        "Name is too small (must be more than 2 chars)",
+                        "Name is too small (must be more than 2 chars)"));
+        }
+        if (len > 64) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Name is too big (must be less than 65 chars)",
+                        "Name is too big (must be less than 65 chars)"));
         }
     }
     
     public void validateLastName(FacesContext context, UIComponent component,
             Object value) {
         String l = (String) value;
-        if (l == null || l.length() < 3) {
+        Integer len = l.length();
+        if (l == null || len < 3) {
             throw new ValidatorException(
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Last name is too small", "Last name is too small"));
+                        "Last name is too small (must be more than 2 chars)",
+                        "Last name is too small (must be more than 2 chars)"));
+        }
+        if (len > 64) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Last name is too big (must be less than 65 chars)",
+                        "Last name is too big (must be less than 65 chars)"));
         }
     }
     
     public void validateLogin(FacesContext context, UIComponent component,
             Object value) {
         String l = (String) value;
-        if (l == null || l.length() < 5) {
+        Integer len = l.length();
+        if ((l == null) || (len < 5)) {
             throw new ValidatorException(
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Login is too small", "Login is too small"));
+                        "Login is too small (must be more than 4 chars",
+                        "Login is too small (must be more than 4 chars"));
+        }
+        if (len > 64) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Login is too big (must be less than 65 chars)",
+                        "Login is too big (must be less than 65 chars)"));
+        }
+        
+        if (ub.exists(l)) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "User with this login already exists.",
+                        "User with this login already exists."));
         }
     }
     
     public void validatePassword(FacesContext context, UIComponent component,
             Object value) {
         String p = (String) value;
-        if(p.length() < 5) {
+        Integer len = p.length();
+        if ((p == null) || (len < 5)) {
             throw new ValidatorException(
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
                         "Password must be more than 4 chars length",
                         "Password must be more than 4 chars length"));
+        }
+        if (len > 64) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Password must be less than 65 chars length",
+                        "Password must be less than 65 chars length"));
         }
     }
         
@@ -85,6 +123,12 @@ public class RegisterBean {
             throw new ValidatorException(
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
                         "Enter valid email", "Enter valid email"));
+        }
+        if (e.length() > 64) {
+            throw new ValidatorException(
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Email must be less than 65 chars",
+                        "Email must be less than 65 chars"));
         }
     }
     
