@@ -38,4 +38,6 @@ public interface UserDAO {
      */
     public UserDTO addNewUser(String login, String password, String name,
             String lastName, String email);
+    
+    public UserDTO addNewUser(UserDTO user, String password);
 }

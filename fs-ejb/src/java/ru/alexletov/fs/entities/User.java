@@ -5,9 +5,7 @@
 package ru.alexletov.fs.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,12 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,7 +48,7 @@ public class User implements Serializable {
     private String login;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 32)
+    @Size(min = 1, max = 128)
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
@@ -75,8 +71,6 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "admin")
     private int admin;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
-    private Collection<File> fileCollection;
 
     public User() {
     }
@@ -149,15 +143,6 @@ public class User implements Serializable {
 
     public void setAdmin(int admin) {
         this.admin = admin;
-    }
-
-    @XmlTransient
-    public Collection<File> getFileCollection() {
-        return fileCollection;
-    }
-
-    public void setFileCollection(Collection<File> fileCollection) {
-        this.fileCollection = fileCollection;
     }
 
     @Override

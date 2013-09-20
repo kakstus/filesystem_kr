@@ -2,14 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
 <title>File Share Server Registration</title>
 </h:head>
 <h:body>
 <h:form>
     <p:fieldset legend="Registration Form" widgetVar="regWidget"
-                style="width: 600px;">
+                style="width: 600px;" id="regform">
         <h:panelGrid columns="3" width="550" border="0">
             <h:outputLabel value="Login" />
             <p:inputText id="login" 
@@ -26,7 +27,7 @@
                          requiredMessage="Passowrd is empty."
                          validator="#{registerBean.validatePassword}" />
             <p:message for="password"/>
-            
+                        
             <h:outputLabel value="Name" />
             <p:inputText id="name" 
                          value="#{registerBean.name}"
@@ -52,7 +53,7 @@
             <p:message for="email"/>
             <p:outputLabel value="" />
             <p:commandButton value="Register" ajax="false"
-                            action="#{registerBean.addUser}"/>
+                            action="#{registerBean.register}"/>
         </h:panelGrid>
     </p:fieldset>
 </h:form>

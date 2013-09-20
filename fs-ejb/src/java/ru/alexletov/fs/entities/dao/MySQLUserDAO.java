@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -104,7 +105,6 @@ public class MySQLUserDAO implements UserDAO {
     @Override
     public UserDTO addNewUser(String login, String password, String name,
             String lastName, String email) {
-        entityManager.getTransaction().begin();
         User user = new User();
         user.setAdmin(0);
         user.setLogin(login);
@@ -112,7 +112,6 @@ public class MySQLUserDAO implements UserDAO {
             user.setPassword(encryptPassword(password));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(MySQLUserDAO.class.getName()).log(Level.SEVERE, null, ex);
-            entityManager.getTransaction().rollback();
             return null;
         }
         user.setName(name);
@@ -120,11 +119,16 @@ public class MySQLUserDAO implements UserDAO {
         user.setEmail(email);
         try {
             entityManager.persist(user);
-        } catch (EntityExistsException ex) {
+        } catch (PersistenceException ex) {
             Logger.getLogger(MySQLUserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        entityManager.getTransaction().commit();
         return new UserDTO(user);
+    }
+    
+    @Override
+    public UserDTO addNewUser(UserDTO user, String password) {
+        return addNewUser(user.getLogin(), password, user.getName(),
+                user.getLastname(), user.getEmail());
     }
 }

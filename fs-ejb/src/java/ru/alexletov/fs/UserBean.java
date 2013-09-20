@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ru.alexletov.fs;
+
+import javax.ejb.Stateless;
+import javax.ejb.LocalBean;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import ru.alexletov.fs.dto.UserDTO;
+import ru.alexletov.fs.entities.dao.DAOFactory;
+import ru.alexletov.fs.entities.dao.UserDAO;
+
+/**
+ *
+ * @author Alex
+ */
+@Stateless
+@LocalBean
+public class UserBean {
+    @PersistenceContext
+    EntityManager em;
+    
+    public UserDTO addUser(UserDTO user, String password) {
+        DAOFactory df = DAOFactory.getDAOFactory(DAOFactory.MYSQL, em);
+        UserDAO ud = df.getUserDAO();
+        return ud.addNewUser(user, password);
+    }
+
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
+    
+
+}
