@@ -1,3 +1,9 @@
 /fs-ejb/nbproject/private/
 /nbproject/private/
 /fs-war/nbproject/private/
+/fs-ejb/build/
+/fs-ejb/dist/
+/fs-war/build/
+/build/
+/dist/
+/fs-war/dist/

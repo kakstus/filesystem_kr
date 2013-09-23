@@ -5,7 +5,9 @@
 package ru.alexletov.fs.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,14 +15,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Alex
+ * @author Максим
  */
 @Entity
 @Table(name = "user")
@@ -30,10 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
     @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+    @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
+    @NamedQuery(name = "User.findByEmployee", query = "SELECT u FROM User u WHERE u.employee = :employee")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,14 +58,14 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstname")
+    private String firstname;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
     @Column(name = "lastname")
     private String lastname;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Недопустимый адрес электронной почты")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
@@ -69,8 +73,12 @@ public class User implements Serializable {
     private String email;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "admin")
-    private int admin;
+    @Column(name = "employee")
+    private int employee;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idClient")
+    private Collection<BancAccount> bancAccountCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private Collection<Operations> operationsCollection;
 
     public User() {
     }
@@ -79,14 +87,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String login, String password, String name, String lastname, String email, int admin) {
+    public User(Integer id, String login, String password, String firstname, String lastname, String email, int employee) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.name = name;
+        this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.admin = admin;
+        this.employee = employee;
     }
 
     public Integer getId() {
@@ -113,12 +121,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getLastname() {
@@ -137,12 +145,30 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getAdmin() {
-        return admin;
+    public int getEmployee() {
+        return employee;
     }
 
-    public void setAdmin(int admin) {
-        this.admin = admin;
+    public void setEmployee(int employee) {
+        this.employee = employee;
+    }
+
+    @XmlTransient
+    public Collection<BancAccount> getBancAccountCollection() {
+        return bancAccountCollection;
+    }
+
+    public void setBancAccountCollection(Collection<BancAccount> bancAccountCollection) {
+        this.bancAccountCollection = bancAccountCollection;
+    }
+
+    @XmlTransient
+    public Collection<Operations> getOperationsCollection() {
+        return operationsCollection;
+    }
+
+    public void setOperationsCollection(Collection<Operations> operationsCollection) {
+        this.operationsCollection = operationsCollection;
     }
 
     @Override

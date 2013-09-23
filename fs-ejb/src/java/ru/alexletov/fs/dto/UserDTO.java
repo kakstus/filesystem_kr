@@ -14,22 +14,22 @@ import ru.alexletov.fs.entities.User;
 public class UserDTO implements Serializable {
     private Integer id;
     private String login;
-    private String name;
+    private String firstName;
     private String lastname;
     private String email;
-    private Integer admin;
+    private Integer employee;
 
     public UserDTO() {
     }
 
     public UserDTO(User user) {
-        this.admin = user.getAdmin();
-        this.name = user.getName();
+        this.employee = user.getEmployee();
+        this.firstName = user.getFirstname();
         this.lastname = user.getLastname();
         this.email = user.getEmail();
         this.id = user.getId();
     }
-            
+
     public Integer getId() {
         return id;
     }
@@ -46,12 +46,12 @@ public class UserDTO implements Serializable {
         this.login = login;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastname() {
@@ -70,12 +70,12 @@ public class UserDTO implements Serializable {
         this.email = email;
     }
 
-    public Integer getAdmin() {
-        return admin;
+    public Integer getEmployee() {
+        return employee;
     }
 
-    public void setAdmin(Integer admin) {
-        this.admin = admin;
+    public void setEmployee(Integer employee) {
+        this.employee = employee;
     }
     
 }

@@ -5,39 +5,41 @@
 package ru.alexletov.fs.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Alex
+ * @author Максим
  */
 @Entity
-@Table(name = "file")
+@Table(name = "banc_account")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "File.findAll", query = "SELECT f FROM File f"),
-    @NamedQuery(name = "File.findById", query = "SELECT f FROM File f WHERE f.id = :id"),
-    @NamedQuery(name = "File.findByName", query = "SELECT f FROM File f WHERE f.name = :name"),
-    @NamedQuery(name = "File.findByCreateDate", query = "SELECT f FROM File f WHERE f.createDate = :createDate"),
-    @NamedQuery(name = "File.findByShared", query = "SELECT f FROM File f WHERE f.shared = :shared")})
-public class File implements Serializable {
+    @NamedQuery(name = "BancAccount.findAll", query = "SELECT b FROM BancAccount b"),
+    @NamedQuery(name = "BancAccount.findById", query = "SELECT b FROM BancAccount b WHERE b.id = :id"),
+    @NamedQuery(name = "BancAccount.findByCreateDate", query = "SELECT b FROM BancAccount b WHERE b.createDate = :createDate"),
+    @NamedQuery(name = "BancAccount.findByStatus", query = "SELECT b FROM BancAccount b WHERE b.status = :status"),
+    @NamedQuery(name = "BancAccount.findByAmount", query = "SELECT b FROM BancAccount b WHERE b.amount = :amount")})
+public class BancAccount implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,43 +48,32 @@ public class File implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 512)
-    @Column(name = "name")
-    private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "content")
-    private byte[] content;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "create_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
-    @Lob
-    @Column(name = "description")
-    private byte[] description;
+    @Column(name = "status")
+    private Integer status;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "shared")
-    private int shared;
-    @JoinColumn(name = "userid", referencedColumnName = "id")
+    @Column(name = "amount")
+    private int amount;
+    @JoinColumn(name = "id_client", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private User userid;
+    private User idClient;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccountF")
+    private Collection<Operations> operationsCollection;
 
-    public File() {
+    public BancAccount() {
     }
 
-    public File(Integer id) {
+    public BancAccount(Integer id) {
         this.id = id;
     }
 
-    public File(Integer id, String name, byte[] content, Date createDate, int shared) {
+    public BancAccount(Integer id, Date createDate, int amount) {
         this.id = id;
-        this.name = name;
-        this.content = content;
         this.createDate = createDate;
-        this.shared = shared;
+        this.amount = amount;
     }
 
     public Integer getId() {
@@ -93,22 +84,6 @@ public class File implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -117,28 +92,37 @@ public class File implements Serializable {
         this.createDate = createDate;
     }
 
-    public byte[] getDescription() {
-        return description;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setDescription(byte[] description) {
-        this.description = description;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public int getShared() {
-        return shared;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setShared(int shared) {
-        this.shared = shared;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public User getUserid() {
-        return userid;
+    public User getIdClient() {
+        return idClient;
     }
 
-    public void setUserid(User userid) {
-        this.userid = userid;
+    public void setIdClient(User idClient) {
+        this.idClient = idClient;
+    }
+
+    @XmlTransient
+    public Collection<Operations> getOperationsCollection() {
+        return operationsCollection;
+    }
+
+    public void setOperationsCollection(Collection<Operations> operationsCollection) {
+        this.operationsCollection = operationsCollection;
     }
 
     @Override
@@ -151,10 +135,10 @@ public class File implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof File)) {
+        if (!(object instanceof BancAccount)) {
             return false;
         }
-        File other = (File) object;
+        BancAccount other = (BancAccount) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -163,7 +147,7 @@ public class File implements Serializable {
 
     @Override
     public String toString() {
-        return "ru.alexletov.fs.entities.File[ id=" + id + " ]";
+        return "ru.alexletov.fs.entities.BancAccount[ id=" + id + " ]";
     }
     
 }

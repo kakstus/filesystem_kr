@@ -134,10 +134,10 @@ public class RegisterBean {
     
     public String register() {
         UserDTO user = new UserDTO();
-        user.setAdmin(0);
+        user.setEmployee(0);
         user.setEmail(email);
         user.setLastname(lastname);
-        user.setName(name);
+        user.setFirstName(name);
         user.setLogin(login);
         if (ub.addUser(user, password) != null) {
             return "success";

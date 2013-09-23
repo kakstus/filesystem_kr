@@ -106,7 +106,7 @@ public class MySQLUserDAO implements UserDAO {
     public UserDTO addNewUser(String login, String password, String name,
             String lastName, String email) {
         User user = new User();
-        user.setAdmin(0);
+        user.setEmployee(0);
         user.setLogin(login);
         try {
             user.setPassword(encryptPassword(password));
@@ -114,7 +114,7 @@ public class MySQLUserDAO implements UserDAO {
             Logger.getLogger(MySQLUserDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        user.setName(name);
+        user.setFirstname(name);
         user.setLastname(lastName);
         user.setEmail(email);
         try {
@@ -128,7 +128,7 @@ public class MySQLUserDAO implements UserDAO {
     
     @Override
     public UserDTO addNewUser(UserDTO user, String password) {
-        return addNewUser(user.getLogin(), password, user.getName(),
+        return addNewUser(user.getLogin(), password, user.getFirstName(),
                 user.getLastname(), user.getEmail());
     }
 
