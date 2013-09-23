@@ -11,6 +11,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import ru.alexletov.fs.dto.UserDTO;
 
 /**
  *
@@ -21,10 +22,14 @@ import javax.faces.validator.ValidatorException;
 public class LoginBean {
     @EJB
     private AuthenticateBean authBean;
+    @EJB
+    private UserBean ub;
     private boolean logged = false;
     private boolean loginError = false;
     private String login;
     private String password;
+    private String firstName;
+    private String lastName;
     /**
      * Creates a new instance of LoginBean
      */
@@ -35,11 +40,15 @@ public class LoginBean {
         return logged;
     }
     public void doLogin() {
-        loginError = false;
+    loginError = false;
         logged = authBean.doLogin(login, password);
         if (!logged) {
             loginError = true;
+            return;
         }
+        UserDTO user = ub.getUserByLogin(login);
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastname();
     }
     
     public void validateName(FacesContext context, UIComponent component,
@@ -85,4 +94,21 @@ public class LoginBean {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
 }
