@@ -15,7 +15,7 @@ public class UserDTO implements Serializable {
     private Integer id;
     private String login;
     private String firstName;
-    private String lastname;
+    private String lastName;
     private String email;
     private Integer employee;
 
@@ -25,7 +25,7 @@ public class UserDTO implements Serializable {
     public UserDTO(User user) {
         this.employee = user.getEmployee();
         this.firstName = user.getFirstname();
-        this.lastname = user.getLastname();
+        this.lastName = user.getLastname();
         this.email = user.getEmail();
         this.id = user.getId();
     }
@@ -55,11 +55,11 @@ public class UserDTO implements Serializable {
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
 
     public String getEmail() {
